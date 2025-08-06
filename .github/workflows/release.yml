@@ -1,0 +1,34 @@
+name: Generate Changelog and Tag Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Needed to analyse commits history
+
+      - name: Get Version and Generate Changelog
+        id: changelog
+        uses: triat/conventional-changelog-action@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          git-tag: true
+          output-file: false
+
+      - name: Create GitHub Release
+        id: release
+        uses: softprops/action-gh-release@v1
+        if: ${{ steps.changelog.outputs.skipped == 'false' }}
+        with:
+          tag_name: ${{ steps.changelog.outputs.tag }}
+          name: Release ${{ steps.changelog.outputs.tag }}
+          body: ${{ steps.changelog.outputs.clean_changelog }}
+          draft: false
+          prerelease: false
