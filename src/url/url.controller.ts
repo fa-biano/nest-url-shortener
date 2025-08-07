@@ -9,8 +9,8 @@ export class UrlController {
 
   @Post()
   @HttpCode(201)
-  async createShortUrl(@Body() createUrlDto: CreateUrlDto): Promise<{ shortUrl: URL }> {
-    const shortUrl = await this.urlService.createShortUrl(createUrlDto)
+  async createShortUrl(@Body() { originalUrl }: CreateUrlDto): Promise<{ shortUrl: URL }> {
+    const shortUrl = await this.urlService.createShortUrl(originalUrl)
     return { shortUrl }
   }
 
