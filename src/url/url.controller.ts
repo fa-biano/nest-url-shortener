@@ -1,8 +1,8 @@
 import { Body, Controller, Get, HttpCode, Param, Post, Res } from '@nestjs/common'
 import express from 'express'
 import { UrlService } from './url.service'
-import { CreateUrlDto } from './dto/create-url.dto'
-import { UrlShortCodeDto } from './dto/url-short-code.dto'
+import { CreateUrlDto } from './dtos/create-url.dto'
+import { UrlShortCodeDto } from './dtos/url-short-code.dto'
 
 @Controller('')
 export class UrlController {
