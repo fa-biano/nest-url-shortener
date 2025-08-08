@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { CreateUrlDto } from './dto/create-url.dto'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { UrlEntity } from './url.entity'
@@ -22,20 +21,21 @@ export class UrlService {
     return code
   }
 
-  async createShortUrl(createUrlDto: CreateUrlDto): Promise<URL> {
-    let shortCode: string = ''
+  async createShortUrl(originalUrl: URL): Promise<URL> {
+    let urlShortCode: string = ''
     let exists = true
 
     while (exists) {
-      shortCode = this.generateShortCode()
-      const saveShortCode = await this.urlRepository.findOne({ where: { shortCode } })
+      urlShortCode = this.generateShortCode()
+      const saveShortCode = await this.urlRepository.findOne({ where: { urlShortCode } })
       exists = saveShortCode ? true : false
     }
 
-    await this.urlRepository.save({ originalUrl: new URL(createUrlDto.originalUrl), shortCode })
+    const stringUrl = originalUrl.toString()
+    await this.urlRepository.save({ originalUrl: stringUrl, urlShortCode })
 
-    const dns = this.configService.get<string>('API_DNS', 'http://localhost:3001')
-    const shortenerUrl: URL = new URL(`${dns}/${shortCode}`)
+    const apiHost = this.configService.get<string>('API_HOST', 'http://localhost:3001')
+    const shortenerUrl: URL = new URL(`${apiHost}/${urlShortCode}`)
     return shortenerUrl
   }
 }
