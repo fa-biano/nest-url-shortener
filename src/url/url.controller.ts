@@ -2,8 +2,9 @@ import { Body, Controller, Get, HttpCode, Param, Post, Res } from '@nestjs/commo
 import express from 'express'
 import { UrlService } from './url.service'
 import { CreateUrlDto } from './dto/create-url.dto'
+import { UrlShortCodeDto } from './dto/url-short-code.dto'
 
-@Controller('shortener')
+@Controller('')
 export class UrlController {
   constructor(private readonly urlService: UrlService) {}
 
@@ -15,8 +16,11 @@ export class UrlController {
   }
 
   @Get(':shortCode')
-  redirectToOriginalUrl(@Param('shortCode') shortCode: string, @Res() res: express.Response): void {
-    console.log('shortCode', shortCode)
-    return res.redirect('https://www.google.com')
+  async redirectToOriginalUrl(
+    @Param('shortCode') { shortCode }: UrlShortCodeDto,
+    @Res() res: express.Response,
+  ): Promise<void> {
+    const { originalUrl } = await this.urlService.retriveOriginalUrl(shortCode)
+    return res.redirect(originalUrl)
   }
 }
