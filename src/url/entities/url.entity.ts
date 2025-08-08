@@ -25,4 +25,9 @@ export class UrlEntity {
 
   @Column({ type: 'timestamp with time zone', nullable: true })
   deletedAt: Date
+
+  // A relação com a tabela 'users'
+  // @ManyToOne(() => User, user => user.urls, { onDelete: 'SET NULL' })
+  // @JoinColumn({ name: 'user_id' })
+  // user: User
 }
