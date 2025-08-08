@@ -1,13 +1,28 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm'
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm'
 
-@Entity()
+@Entity('urls')
 export class UrlEntity {
-  @PrimaryGeneratedColumn()
-  id: number
+  @PrimaryGeneratedColumn('uuid')
+  id: string
 
-  @Column()
-  originalUrl: URL
+  @Column({ length: 2048 })
+  originalUrl: string
 
-  @Column({ unique: true })
-  shortCode: string
+  @Column({ unique: true, length: 6 })
+  urlShortCode: string
+
+  @Column({ default: 0 })
+  accessCounter: number
+
+  @Column({ type: 'timestamp with time zone', nullable: true })
+  lastAccessAt: Date
+
+  @CreateDateColumn()
+  createdAt: Date
+
+  @UpdateDateColumn()
+  updatedAt: Date
+
+  @Column({ type: 'timestamp with time zone', nullable: true })
+  deletedAt: Date
 }
