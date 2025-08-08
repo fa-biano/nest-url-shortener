@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
@@ -37,5 +37,12 @@ export class UrlService {
     const apiHost = this.configService.get<string>('API_HOST', 'http://localhost:3001')
     const shortenerUrl: URL = new URL(`${apiHost}/${urlShortCode}`)
     return shortenerUrl
+  }
+
+  async retriveOriginalUrl(urlShortCode: string): Promise<UrlEntity> {
+    const originalUrl = await this.urlRepository.findOne({ where: { urlShortCode } })
+
+    if (!originalUrl) throw new NotFoundException('Shorten code not found')
+    return originalUrl
   }
 }
