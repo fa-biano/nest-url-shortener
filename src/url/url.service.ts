@@ -39,16 +39,15 @@ export class UrlService {
     return shortenerUrl
   }
 
-  async retriveOriginalUrl(urlShortCode: string): Promise<UrlEntity> {
+  async findUrlByShortCode(urlShortCode: string): Promise<UrlEntity> {
     const url = await this.urlRepository.findOne({ where: { urlShortCode } })
     if (!url) throw new NotFoundException('Shorten code not found')
-
-    await this.incrementUrlAccessCounter(url)
     return url
   }
 
   async incrementUrlAccessCounter(url: UrlEntity): Promise<void> {
     url.accessCounter += 1
+    url.lastAccessAt = new Date()
     await this.urlRepository.save(url)
   }
 }
