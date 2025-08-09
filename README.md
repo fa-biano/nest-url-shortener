@@ -40,7 +40,8 @@ Running `make local-setup` will execute the scripts below to make the local setu
 <br>Alternatively, you can run each command manually if you prefer:
 
 * `cp .env.example .env` to copy the environment variables. Edit the <strong>.env</strong> file if you need to change the values;
-* `npm install` to install the project dependencies. It will also trigger the preinstall script to ensure node <strong>LTS</strong> version is in use;
+* `nvm use` to ensure node <strong>LTS</strong> version is in use;
+* `npm install` to install the project dependencies;
 * `docker compose up -d db` will raise a PostgreSQL container to persist app data;
 
 ---
