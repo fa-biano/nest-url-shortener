@@ -1,0 +1,43 @@
+# [0.1.0](https://github.com/fa-biano/nest-url-shortener/compare/v0.0.2...v0.1.0) (2025-08-09)
+
+
+### Bug Fixes
+
+* preinstall script ([9bb4fec](https://github.com/fa-biano/nest-url-shortener/commit/9bb4fec0b85d7ea871717743823e7e91edc22f63))
+* shortCode param dto validation in redirectToOriginalUrl method ([1aba4d6](https://github.com/fa-biano/nest-url-shortener/commit/1aba4d629766f8813af55dd3c74efcc63132fa4b))
+
+
+### Features
+
+* added call to incrementUrlAccessCounter in redirectToOriginalUrl method ([2c7096a](https://github.com/fa-biano/nest-url-shortener/commit/2c7096a2b756536b19d644bf481e4d02f7636b0a))
+* added columns accessCounter, lastAccessAt and timestamps to UrlEntity ([10fea86](https://github.com/fa-biano/nest-url-shortener/commit/10fea865ea6af3450b0351e7c0bdc04b782f6488))
+* added config for TypeOrmModule ([106c41a](https://github.com/fa-biano/nest-url-shortener/commit/106c41a391e333755909133320f4a3fb352e6d82))
+* added ConfigModule and UrlModule to AppModule ([e835ecc](https://github.com/fa-biano/nest-url-shortener/commit/e835ecce27d0139738d135f3ae0df05387996bbd))
+* added CreateUrlDto ([1308377](https://github.com/fa-biano/nest-url-shortener/commit/1308377939834587dcf3040ba4c8d88599419d34))
+* added incrementUrlAccessCounter method to UrlService ([31e5feb](https://github.com/fa-biano/nest-url-shortener/commit/31e5feb95cafd493940e683bdc7c97c19049c9dd))
+* added retriveOriginalUrl method to UrlService ([a21858b](https://github.com/fa-biano/nest-url-shortener/commit/a21858bbe4e14dbca654660f06045080bac49d85))
+* added transform to ValidationPipe ([b35e98c](https://github.com/fa-biano/nest-url-shortener/commit/b35e98c8482f958c55b563c814e0792c5a74e01a))
+* added type null to nullable Date Columns ([5d88521](https://github.com/fa-biano/nest-url-shortener/commit/5d885213d3f8f27998333b3386c7ad6ed5ad4c0c))
+* added UrlController class and createShortUrl method ([e0a1aa7](https://github.com/fa-biano/nest-url-shortener/commit/e0a1aa7da30485cce3a2058b1efc45398e148b52))
+* added UrlEntity ([e1ae696](https://github.com/fa-biano/nest-url-shortener/commit/e1ae6964ad0e49452c844684d9e2d6dba66778fe))
+* added UrlModule ([5b0de90](https://github.com/fa-biano/nest-url-shortener/commit/5b0de9018e1033817e23bdbb05e275c43f0607c9))
+* added UrlService and createShortUrl method ([b5c0364](https://github.com/fa-biano/nest-url-shortener/commit/b5c0364c3c17da0b4b87ed6d0bdd2e7ab5964ab8))
+* added ValidationPipe to main ([28e2de9](https://github.com/fa-biano/nest-url-shortener/commit/28e2de9ff2040a3b4a83ac68c4f57c78b658d7bb))
+* created CreateUrlDto ([b6ea6e9](https://github.com/fa-biano/nest-url-shortener/commit/b6ea6e9094fd570d667cce0745d0ded9aef2f5d4))
+* created UrlShortCodeDto ([4fca726](https://github.com/fa-biano/nest-url-shortener/commit/4fca7264257c3f99defaa23521c5a8954af732da))
+* implemented persistency to createShortUrl method in UrlService ([09d846d](https://github.com/fa-biano/nest-url-shortener/commit/09d846de616e843d8537a8acfb343d4b7ea81dc8))
+* implemented redirectToOriginalUrl method to UrlController ([33a534a](https://github.com/fa-biano/nest-url-shortener/commit/33a534a5f7e6544f13f1889bab58392bfd8592dd))
+* install @nestjs/config, class-validator and class-transformer ([7bd6a17](https://github.com/fa-biano/nest-url-shortener/commit/7bd6a174ee4c28f3b2164feb01844ea0f8d2032d))
+* install @nestjs/typeorm, typeorm and pg ([34eb166](https://github.com/fa-biano/nest-url-shortener/commit/34eb166ff8d7108b0b809c5bf53ac7727e059a46))
+
+
+### Performance Improvements
+
+* refact createShortUrl to avoid infinite loop ([b521f40](https://github.com/fa-biano/nest-url-shortener/commit/b521f403f6edad018f6105747ffd6e5e50fef820))
+
+
+
+## 0.0.2 (2025-08-07)
+
+
+
