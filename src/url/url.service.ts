@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
-import { UrlEntity } from './url.entity'
+import { UrlEntity } from './entities/url.entity'
 
 @Injectable()
 export class UrlService {
@@ -40,9 +40,15 @@ export class UrlService {
   }
 
   async retriveOriginalUrl(urlShortCode: string): Promise<UrlEntity> {
-    const originalUrl = await this.urlRepository.findOne({ where: { urlShortCode } })
+    const url = await this.urlRepository.findOne({ where: { urlShortCode } })
+    if (!url) throw new NotFoundException('Shorten code not found')
 
-    if (!originalUrl) throw new NotFoundException('Shorten code not found')
-    return originalUrl
+    await this.incrementUrlAccessCounter(url)
+    return url
+  }
+
+  async incrementUrlAccessCounter(url: UrlEntity): Promise<void> {
+    url.accessCounter += 1
+    await this.urlRepository.save(url)
   }
 }
