@@ -1,4 +1,4 @@
-.PHONY: setup-env install-deps start-db local-setup changelog
+.PHONY: setup-env preinstall install-deps start-db local-setup changelog
 
 setup-env:
 	@echo "Checking if .env file exists..."
@@ -9,6 +9,10 @@ setup-env:
 		echo ".env already exists. No actions needed."; \
 	fi
 	@echo ""
+
+preinstall:
+	@echo "Running nvm use..."
+	bash -c '. ~/.nvm/nvm.sh && nvm use'
 
 install-deps:
 	@echo "Checking for 'node_modules' directory..."
@@ -30,7 +34,7 @@ start-db:
 	fi
 	@echo ""
 
-local-setup: setup-env install-deps start-db
+local-setup: setup-env preinstall install-deps start-db
 	@echo "All setup is complete. Run 'npm start:dev' to start server."
 
 changelog:
