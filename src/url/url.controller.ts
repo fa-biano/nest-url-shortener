@@ -20,7 +20,8 @@ export class UrlController {
     @Param(new ValidationPipe({ transform: true })) { shortCode }: UrlShortCodeDto,
     @Res() res: express.Response,
   ): Promise<void> {
-    const { originalUrl } = await this.urlService.retriveOriginalUrl(shortCode)
-    return res.redirect(originalUrl)
+    const url = await this.urlService.findUrlByShortCode(shortCode)
+    await this.urlService.incrementUrlAccessCounter(url)
+    return res.redirect(url.originalUrl)
   }
 }
