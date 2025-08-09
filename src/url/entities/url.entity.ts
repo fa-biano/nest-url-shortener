@@ -15,7 +15,7 @@ export class UrlEntity {
   accessCounter: number
 
   @Column({ type: 'timestamp with time zone', nullable: true })
-  lastAccessAt: Date
+  lastAccessAt: Date | null
 
   @CreateDateColumn()
   createdAt: Date
@@ -24,7 +24,7 @@ export class UrlEntity {
   updatedAt: Date
 
   @Column({ type: 'timestamp with time zone', nullable: true })
-  deletedAt: Date
+  deletedAt: Date | null
 
   // A relação com a tabela 'users'
   // @ManyToOne(() => User, user => user.urls, { onDelete: 'SET NULL' })
