@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, Param, Post, Res } from '@nestjs/common'
+import { Body, Controller, Get, HttpCode, Param, Post, Res, ValidationPipe } from '@nestjs/common'
 import express from 'express'
 import { UrlService } from './url.service'
 import { CreateUrlDto } from './dtos/create-url.dto'
@@ -17,7 +17,7 @@ export class UrlController {
 
   @Get(':shortCode')
   async redirectToOriginalUrl(
-    @Param('shortCode') { shortCode }: UrlShortCodeDto,
+    @Param(new ValidationPipe({ transform: true })) { shortCode }: UrlShortCodeDto,
     @Res() res: express.Response,
   ): Promise<void> {
     const { originalUrl } = await this.urlService.retriveOriginalUrl(shortCode)
