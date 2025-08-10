@@ -8,6 +8,7 @@ import { ConfigService } from '@nestjs/config'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { UrlEntity } from './entities/url.entity'
+import { UserResponseDto } from 'src/user/dtos/user-response.dto'
 
 @Injectable()
 export class UrlService {
@@ -30,7 +31,7 @@ export class UrlService {
     return typeof error === 'object' && error !== null && 'code' in error
   }
 
-  async createShortUrl(originalUrl: URL): Promise<URL> {
+  async createShortUrl(originalUrl: URL, authUser: UserResponseDto): Promise<URL> {
     let urlShortCode: string = ''
     let attempts = 0
     const maxAttempts = 5
@@ -40,7 +41,7 @@ export class UrlService {
     while (attempts < maxAttempts) {
       try {
         urlShortCode = this.generateShortCode()
-        await this.urlRepository.save({ originalUrl: stringUrl, urlShortCode })
+        await this.urlRepository.save({ originalUrl: stringUrl, urlShortCode, user: authUser })
 
         const apiHost = this.configService.get<string>('API_HOST', 'http://localhost:3001')
         const shortenerUrl: URL = new URL(`${apiHost}/${urlShortCode}`)
