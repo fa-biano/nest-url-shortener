@@ -30,5 +30,5 @@ export class UserEntity {
   deletedAt: Date | null
 
   @OneToMany(() => UrlEntity, (url) => url.user)
-  urls: UrlEntity[]
+  urls?: UrlEntity[]
 }
