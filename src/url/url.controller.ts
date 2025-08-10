@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   Param,
@@ -58,5 +59,18 @@ export class UrlController {
     const originalUrl = await this.urlService.findUrlByShortCode(shortCode)
     await this.urlService.updateUrlByShortCode(originalUrl, updateUrl, authUser)
     return { message: 'URL updated successfully' }
+  }
+
+  @Delete('url/:shortCode')
+  @UseGuards(JwtAuthGuard)
+  async deleteShortUrl(
+    @Req() req: express.Request,
+    @Param(new ValidationPipe({ transform: true })) { shortCode }: UrlShortCodeDto,
+  ): Promise<{ message: string }> {
+    const authUser = req.user as UserResponseDto
+
+    const originalUrl = await this.urlService.findUrlByShortCode(shortCode)
+    await this.urlService.deleteUrlByShortCode(originalUrl, authUser)
+    return { message: 'URL deleted successfully' }
   }
 }
