@@ -17,7 +17,7 @@ export class UserEntity {
   @Column({ unique: true, length: 255 })
   email: string
 
-  @Column({ select: false, length: 255 })
+  @Column({ length: 255 })
   passwordHash: string
 
   @CreateDateColumn()
