@@ -15,25 +15,25 @@ export class UrlEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
-  @Column({ length: 2048 })
+  @Column({ name: 'original_url', length: 2048 })
   originalUrl: string
 
-  @Column({ unique: true, length: 6 })
+  @Column({ name: 'url_short_code', unique: true, length: 6 })
   urlShortCode: string
 
-  @Column({ default: 0 })
+  @Column({ name: 'access_counter', default: 0 })
   accessCounter: number
 
-  @Column({ type: 'timestamp with time zone', nullable: true })
+  @Column({ name: 'last_access_at', type: 'timestamp with time zone', nullable: true })
   lastAccessAt: Date | null
 
-  @CreateDateColumn()
+  @CreateDateColumn({ name: 'created_at' })
   createdAt: Date
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date
 
-  @DeleteDateColumn({ type: 'timestamp with time zone', nullable: true })
+  @DeleteDateColumn({ name: 'deleted_at', type: 'timestamp with time zone', nullable: true })
   deletedAt: Date | null
 
   @ManyToOne(() => UserEntity, (user) => user.urls, { nullable: true, onDelete: 'SET NULL' })

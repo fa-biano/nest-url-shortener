@@ -17,16 +17,16 @@ export class UserEntity {
   @Column({ unique: true, length: 255 })
   email: string
 
-  @Column({ length: 255 })
+  @Column({ name: 'password_hash', length: 255 })
   passwordHash: string
 
-  @CreateDateColumn()
+  @CreateDateColumn({ name: 'created_at' })
   createdAt: Date
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date
 
-  @DeleteDateColumn({ type: 'timestamp with time zone', nullable: true })
+  @DeleteDateColumn({ name: 'deleted_at', type: 'timestamp with time zone', nullable: true })
   deletedAt: Date | null
 
   @OneToMany(() => UrlEntity, (url) => url.user)
