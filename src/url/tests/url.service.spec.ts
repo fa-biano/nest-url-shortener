@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { UrlService } from './url.service'
+import { UrlService } from '../url.service'
 import { Repository } from 'typeorm'
 import { ConfigService } from '@nestjs/config'
-import { UrlEntity } from './entities/url.entity'
+import { UrlEntity } from '../entities/url.entity'
 import { getRepositoryToken } from '@nestjs/typeorm'
 import { ConflictException, InternalServerErrorException, NotFoundException } from '@nestjs/common'
 
@@ -22,7 +22,7 @@ const mockConfigService = () => ({
 
 describe('UrlService', () => {
   let service: UrlService
-  let repository: Repository<UrlEntity>
+  let urlRepository: Repository<UrlEntity>
   let configService: ConfigService
 
   const mockUrlEntity: UrlEntity = {
@@ -52,7 +52,7 @@ describe('UrlService', () => {
     }).compile()
 
     service = module.get<UrlService>(UrlService)
-    repository = module.get<Repository<UrlEntity>>(getRepositoryToken(UrlEntity))
+    urlRepository = module.get<Repository<UrlEntity>>(getRepositoryToken(UrlEntity))
     configService = module.get<ConfigService>(ConfigService)
 
     jest.clearAllMocks()
@@ -68,7 +68,7 @@ describe('UrlService', () => {
 
     it('should create a short URL successfully on the first attempt', async () => {
       jest.spyOn(service as any, 'generateShortCode').mockReturnValue(mockUrlEntity.urlShortCode)
-      const saveMock = jest.spyOn(repository, 'save').mockResolvedValue(mockUrlEntity)
+      const saveMock = jest.spyOn(urlRepository, 'save').mockResolvedValue(mockUrlEntity)
 
       const shortUrl = await service.createShortUrl(originalUrl)
       const apiHost = configService.get<string>('API_HOST')
@@ -81,7 +81,7 @@ describe('UrlService', () => {
       const newShortCode = 'abcde2'
       jest.spyOn(service as any, 'generateShortCode').mockReturnValue(newShortCode)
       const mockSave = jest
-        .spyOn(repository, 'save')
+        .spyOn(urlRepository, 'save')
         .mockRejectedValueOnce({ code: pgUniqueViolationCode })
         .mockResolvedValueOnce(mockUrlEntity)
 
@@ -95,7 +95,7 @@ describe('UrlService', () => {
     it('should throw ConflictException if max attempts are reached', async () => {
       const maxAttempts = 5
       const saveMock = jest
-        .spyOn(repository, 'save')
+        .spyOn(urlRepository, 'save')
         .mockRejectedValue({ code: pgUniqueViolationCode })
 
       await expect(service.createShortUrl(originalUrl)).rejects.toThrow(
@@ -108,7 +108,7 @@ describe('UrlService', () => {
 
     it('should throw InternalServerErrorException for an unexpected database error', async () => {
       const saveMock = jest
-        .spyOn(repository, 'save')
+        .spyOn(urlRepository, 'save')
         .mockRejectedValue({ code: 'other_error_code' })
 
       await expect(service.createShortUrl(originalUrl)).rejects.toThrow(
@@ -120,14 +120,14 @@ describe('UrlService', () => {
 
   describe('findUrlByShortCode', () => {
     it('should return a UrlEntity if a short code is found', async () => {
-      jest.spyOn(repository, 'findOne').mockResolvedValue(mockUrlEntity)
+      jest.spyOn(urlRepository, 'findOne').mockResolvedValue(mockUrlEntity)
 
       const result = await service.findUrlByShortCode(mockUrlEntity.urlShortCode)
       expect(result).toEqual(mockUrlEntity)
     })
 
     it('should throw NotFoundException if short code is not found', async () => {
-      const findMock = jest.spyOn(repository, 'findOne').mockResolvedValue(null)
+      const findMock = jest.spyOn(urlRepository, 'findOne').mockResolvedValue(null)
 
       await expect(service.findUrlByShortCode('not-found')).rejects.toThrow(
         new NotFoundException('Shorten code not found'),
@@ -138,7 +138,7 @@ describe('UrlService', () => {
 
   describe('incrementUrlAccessCounter', () => {
     it('should increment access counter and update last access date', async () => {
-      const saveMock = jest.spyOn(repository, 'save').mockResolvedValue(mockUrlEntity)
+      const saveMock = jest.spyOn(urlRepository, 'save').mockResolvedValue(mockUrlEntity)
       await service.incrementUrlAccessCounter(mockUrlEntity)
 
       expect(mockUrlEntity.accessCounter).toBe(1)
