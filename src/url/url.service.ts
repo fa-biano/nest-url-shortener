@@ -3,10 +3,11 @@ import {
   Injectable,
   InternalServerErrorException,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Repository } from 'typeorm'
+import { IsNull, Repository } from 'typeorm'
 import { UrlEntity } from './entities/url.entity'
 import { UserResponseDto } from 'src/user/dtos/user-response.dto'
 
@@ -63,7 +64,10 @@ export class UrlService {
   }
 
   async findUrlByShortCode(urlShortCode: string): Promise<UrlEntity> {
-    const url = await this.urlRepository.findOne({ where: { urlShortCode } })
+    const url = await this.urlRepository.findOne({
+      where: { urlShortCode, deletedAt: IsNull() },
+      relations: ['user'],
+    })
     if (!url) throw new NotFoundException('Shorten code not found')
     return url
   }
@@ -71,6 +75,15 @@ export class UrlService {
   async incrementUrlAccessCounter(url: UrlEntity): Promise<void> {
     url.accessCounter += 1
     url.lastAccessAt = new Date()
+    await this.urlRepository.save(url)
+  }
+
+  async updateUrlByShortCode(url: UrlEntity, updateUrl: URL, user: UserResponseDto): Promise<void> {
+    if ((url.user && url.user.id !== user.id) || url.user === null) {
+      throw new UnauthorizedException('You do not have permission to update this URL.')
+    }
+
+    url.originalUrl = updateUrl.toString()
     await this.urlRepository.save(url)
   }
 }
