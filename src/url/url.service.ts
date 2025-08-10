@@ -89,4 +89,9 @@ export class UrlService {
     url.originalUrl = updateUrl.toString()
     await this.urlRepository.save(url)
   }
+
+  async deleteUrlByShortCode(url: UrlEntity, user: UserResponseDto): Promise<void> {
+    this.validateUrlOwner(url, user)
+    await this.urlRepository.softDelete({ urlShortCode: url.urlShortCode })
+  }
 }
