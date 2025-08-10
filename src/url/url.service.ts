@@ -32,6 +32,12 @@ export class UrlService {
     return typeof error === 'object' && error !== null && 'code' in error
   }
 
+  private validateUrlOwner(url: UrlEntity, user: UserResponseDto): void {
+    if ((url.user && url.user.id !== user.id) || url.user === null) {
+      throw new UnauthorizedException('You do not have permission to manage this URL.')
+    }
+  }
+
   async createShortUrl(originalUrl: URL, authUser: UserResponseDto): Promise<URL> {
     let urlShortCode: string = ''
     let attempts = 0
@@ -79,10 +85,7 @@ export class UrlService {
   }
 
   async updateUrlByShortCode(url: UrlEntity, updateUrl: URL, user: UserResponseDto): Promise<void> {
-    if ((url.user && url.user.id !== user.id) || url.user === null) {
-      throw new UnauthorizedException('You do not have permission to update this URL.')
-    }
-
+    this.validateUrlOwner(url, user)
     url.originalUrl = updateUrl.toString()
     await this.urlRepository.save(url)
   }
