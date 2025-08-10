@@ -1,4 +1,14 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm'
+import { UserEntity } from 'src/user/entities/user.entity'
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  ManyToOne,
+  JoinColumn,
+  DeleteDateColumn,
+} from 'typeorm'
 
 @Entity('urls')
 export class UrlEntity {
@@ -23,11 +33,10 @@ export class UrlEntity {
   @UpdateDateColumn()
   updatedAt: Date
 
-  @Column({ type: 'timestamp with time zone', nullable: true })
+  @DeleteDateColumn({ type: 'timestamp with time zone', nullable: true })
   deletedAt: Date | null
 
-  // A relação com a tabela 'users'
-  // @ManyToOne(() => User, user => user.urls, { onDelete: 'SET NULL' })
-  // @JoinColumn({ name: 'user_id' })
-  // user: User
+  @ManyToOne(() => UserEntity, (user) => user.urls, { nullable: true, onDelete: 'SET NULL' })
+  @JoinColumn({ name: 'user_id' })
+  user: UserEntity | null
 }
