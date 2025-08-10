@@ -38,5 +38,5 @@ export class UrlEntity {
 
   @ManyToOne(() => UserEntity, (user) => user.urls, { nullable: true, onDelete: 'SET NULL' })
   @JoinColumn({ name: 'user_id' })
-  user: UserEntity | null
+  user?: UserEntity | null
 }
