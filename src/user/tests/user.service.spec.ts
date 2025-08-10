@@ -123,4 +123,25 @@ describe('UserService', () => {
       expect(mockFind).toHaveBeenCalledWith({ where: { id: userId } })
     })
   })
+
+  describe('findUserByEmail', () => {
+    it('should successfully find a user and return UserResponseDto', async () => {
+      const mockFind = jest.spyOn(userRepository, 'findOne').mockResolvedValue(mockUser)
+
+      const result = await service.findUserByEmail(mockUser.email)
+
+      expect(mockFind).toHaveBeenCalledWith({ where: { email: mockUser.email } })
+      expect(result).toEqual(mockUser)
+    })
+
+    it('should throw NotFoundException if user does not exist', async () => {
+      const mockFind = jest.spyOn(userRepository, 'findOne').mockResolvedValue(null)
+
+      await expect(service.findUserByEmail(mockUser.email)).rejects.toThrow(
+        new NotFoundException('User not found'),
+      )
+
+      expect(mockFind).toHaveBeenCalledWith({ where: { email: mockUser.email } })
+    })
+  })
 })
