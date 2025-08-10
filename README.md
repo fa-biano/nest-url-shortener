@@ -12,7 +12,9 @@ This API provides a powerful and scalable solution for managing shortened URLs, 
 - 🛡️ Parameter validation using DTOs;
 - 🧪 Unit tests with coverage;
 - 🧰 CI/CD with GitHub Actions and Git Hooks with Husky;
+- 🏷️ Automatic generation of tags and changelogs from commit history;
 - 🏗️ Designed with a modular and scalable architecture, ready to handle increased traffic and new features;
+- 🔧 Quick local setup using Makefile scripts and docker compose;
 
 ---
 
@@ -72,16 +74,31 @@ DB_POOL_MAX=20
 
 ```bash
 nest-url-shortener/
-├── .github/             # GitHub Actions workflows
+├── .github/             # GitHub Actions workflows and templates
 ├── .husky/              # Git hooks
 ├── src/
+│   ├── auth/
+│   │   ├── decorators/
+│   │   ├── dtos/
+│   │   ├── guards/
+│   │   ├── interfaces/
+│   │   ├── auth.controller.ts
+│   │   ├── auth.service.ts
+│   │   └── auth.module.ts
 │   ├── url/
 │   │   ├── dtos/        # Data Transfer Objects
 │   │   ├── entities/    # TypeORM entities
-│   │   ├── url.service.ts
-│   │   ├── url.service.spec.ts
+│   │   ├── tests/
 │   │   ├── url.controller.ts
+│   │   ├── url.service.ts
 │   │   └── url.module.ts
+│   ├── user/
+│   │   ├── dtos/        # Data Transfer Objects
+│   │   ├── entities/    # TypeORM entities
+│   │   ├── tests/
+│   │   ├── user.controller.ts
+│   │   ├── user.service.ts
+│   │   └── user.module.ts
 │   ├── app.module.ts
 │   └── main.ts
 ├── .nvmrc

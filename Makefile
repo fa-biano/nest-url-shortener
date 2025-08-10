@@ -36,6 +36,3 @@ start-db:
 
 local-setup: setup-env preinstall install-deps start-db
 	@echo "All setup is complete. Run 'npm start:dev' to start server."
-
-changelog:
-	npx conventional-changelog -p angular -i CHANGELOG.md -s -r 0
