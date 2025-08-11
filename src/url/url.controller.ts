@@ -25,7 +25,7 @@ import { UpdateUrlDto } from './dtos/update-url.dto'
 export class UrlController {
   constructor(private readonly urlService: UrlService) {}
 
-  @Post('url')
+  @Post('urls')
   @HttpCode(201)
   @UseGuards(OptionalJwtAuthGuard)
   async createShortUrl(
@@ -47,21 +47,22 @@ export class UrlController {
     return res.redirect(url.originalUrl)
   }
 
-  @Put('url')
+  @Put('urls/:shortCode')
   @UseGuards(JwtAuthGuard)
   async updateOriginalUrl(
     @Req() req: express.Request,
+    @Param(new ValidationPipe({ transform: true })) { shortCode }: UrlShortCodeDto,
     @Body() updateUrlDto: UpdateUrlDto,
   ): Promise<{ message: string }> {
     const authUser = req.user as UserResponseDto
-    const { shortCode, updateUrl } = updateUrlDto
+    const { updateUrl } = updateUrlDto
 
     const originalUrl = await this.urlService.findUrlByShortCode(shortCode)
     await this.urlService.updateUrlByShortCode(originalUrl, updateUrl, authUser)
     return { message: 'URL updated successfully' }
   }
 
-  @Delete('url/:shortCode')
+  @Delete('urls/:shortCode')
   @UseGuards(JwtAuthGuard)
   async deleteShortUrl(
     @Req() req: express.Request,

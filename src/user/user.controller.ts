@@ -6,7 +6,7 @@ import { UserIdDto } from './dtos/user-id.dto'
 import { UserEntity } from './entities/user.entity'
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard'
 
-@Controller('user')
+@Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
