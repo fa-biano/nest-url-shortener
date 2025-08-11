@@ -1,14 +1,23 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { UrlService } from '../url.service'
-import { Repository } from 'typeorm'
+import { IsNull, Repository } from 'typeorm'
 import { ConfigService } from '@nestjs/config'
 import { UrlEntity } from '../entities/url.entity'
 import { getRepositoryToken } from '@nestjs/typeorm'
-import { ConflictException, InternalServerErrorException, NotFoundException } from '@nestjs/common'
+import {
+  ConflictException,
+  InternalServerErrorException,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common'
+import { UserResponseDto } from 'src/user/dtos/user-response.dto'
+import { UserEntity } from 'src/user/entities/user.entity'
+import { plainToInstance } from 'class-transformer'
 
 const mockUrlRepository = () => ({
   save: jest.fn(),
   findOne: jest.fn(),
+  softDelete: jest.fn(),
 })
 
 const mockConfigService = () => ({
@@ -19,6 +28,15 @@ const mockConfigService = () => ({
     return defaultValue
   }),
 })
+
+const mockUser: UserEntity = {
+  id: 'uuid-123',
+  email: 'test@example.com',
+  passwordHash: 'hashed_password',
+  createdAt: new Date(2025, 8, 1),
+  updatedAt: new Date(2025, 8, 1),
+  deletedAt: null,
+}
 
 describe('UrlService', () => {
   let service: UrlService
@@ -35,6 +53,8 @@ describe('UrlService', () => {
     updatedAt: new Date(2025, 8, 1),
     deletedAt: null,
   }
+
+  const mockAuthUser = plainToInstance(UserResponseDto, mockUser, { excludeExtraneousValues: true })
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -70,7 +90,7 @@ describe('UrlService', () => {
       jest.spyOn(service as any, 'generateShortCode').mockReturnValue(mockUrlEntity.urlShortCode)
       const saveMock = jest.spyOn(urlRepository, 'save').mockResolvedValue(mockUrlEntity)
 
-      const shortUrl = await service.createShortUrl(originalUrl)
+      const shortUrl = await service.createShortUrl(originalUrl, mockAuthUser)
       const apiHost = configService.get<string>('API_HOST')
 
       expect(saveMock).toHaveBeenCalledTimes(1)
@@ -85,7 +105,7 @@ describe('UrlService', () => {
         .mockRejectedValueOnce({ code: pgUniqueViolationCode })
         .mockResolvedValueOnce(mockUrlEntity)
 
-      const shortUrl = await service.createShortUrl(originalUrl)
+      const shortUrl = await service.createShortUrl(originalUrl, mockAuthUser)
       const apiHost = configService.get<string>('API_HOST')
 
       expect(mockSave).toHaveBeenCalledTimes(2)
@@ -98,7 +118,7 @@ describe('UrlService', () => {
         .spyOn(urlRepository, 'save')
         .mockRejectedValue({ code: pgUniqueViolationCode })
 
-      await expect(service.createShortUrl(originalUrl)).rejects.toThrow(
+      await expect(service.createShortUrl(originalUrl, mockAuthUser)).rejects.toThrow(
         new ConflictException(
           `Failed to create ShortUrl after ${maxAttempts} attempts. Try again later.`,
         ),
@@ -111,7 +131,7 @@ describe('UrlService', () => {
         .spyOn(urlRepository, 'save')
         .mockRejectedValue({ code: 'other_error_code' })
 
-      await expect(service.createShortUrl(originalUrl)).rejects.toThrow(
+      await expect(service.createShortUrl(originalUrl, mockAuthUser)).rejects.toThrow(
         new InternalServerErrorException('An unexpected error occurred.'),
       )
       expect(saveMock).toHaveBeenCalledTimes(1)
@@ -132,7 +152,10 @@ describe('UrlService', () => {
       await expect(service.findUrlByShortCode('not-found')).rejects.toThrow(
         new NotFoundException('Shorten code not found'),
       )
-      expect(findMock).toHaveBeenCalledWith({ where: { urlShortCode: 'not-found' } })
+      expect(findMock).toHaveBeenCalledWith({
+        where: { urlShortCode: 'not-found', deletedAt: IsNull() },
+        relations: ['user'],
+      })
     })
   })
 
@@ -144,6 +167,70 @@ describe('UrlService', () => {
       expect(mockUrlEntity.accessCounter).toBe(1)
       expect(mockUrlEntity.lastAccessAt).toBeInstanceOf(Date)
       expect(saveMock).toHaveBeenCalledTimes(1)
+    })
+  })
+
+  describe('updateUrlByShortCode', () => {
+    const mockUpdateUrl = new URL('https://new-original.com')
+
+    it('should update the URL if the user is the owner', async () => {
+      const mockValidateOwner = jest.spyOn(service as any, 'validateUrlOwner')
+
+      const updatedUrlEntity = { ...mockUrlEntity, originalUrl: mockUpdateUrl.toString() }
+      const saveMock = jest.spyOn(urlRepository, 'save').mockResolvedValue(updatedUrlEntity)
+
+      await service.updateUrlByShortCode(mockUrlEntity, mockUpdateUrl, mockAuthUser)
+
+      expect(saveMock).toHaveBeenCalledTimes(1)
+      expect(saveMock).toHaveBeenCalledWith(updatedUrlEntity)
+      expect(mockValidateOwner).toHaveBeenCalledWith(mockUrlEntity, mockAuthUser)
+    })
+
+    it('should throw UnauthorizedException if the user is not the owner', async () => {
+      jest.spyOn(service as any, 'validateUrlOwner').mockImplementationOnce(() => {
+        throw new UnauthorizedException('You do not have permission to manage this URL.')
+      })
+
+      const updatedUrlEntity = { ...mockUrlEntity, originalUrl: mockUpdateUrl.toString() }
+      const saveMock = jest.spyOn(urlRepository, 'save').mockResolvedValue(updatedUrlEntity)
+
+      await expect(
+        service.updateUrlByShortCode(mockUrlEntity, mockUpdateUrl, mockAuthUser),
+      ).rejects.toThrow(new UnauthorizedException('You do not have permission to manage this URL.'))
+
+      expect(saveMock).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('deleteUrlByShortCode', () => {
+    it('should soft delete the URL if the user is the owner', async () => {
+      const mockValidateOwner = jest.spyOn(service as any, 'validateUrlOwner')
+
+      const deleteMock = jest.spyOn(urlRepository, 'softDelete').mockResolvedValue({
+        affected: 1,
+        raw: [],
+        generatedMaps: [],
+      })
+
+      await service.deleteUrlByShortCode(mockUrlEntity, mockAuthUser)
+
+      expect(deleteMock).toHaveBeenCalledTimes(1)
+      expect(deleteMock).toHaveBeenCalledWith({ urlShortCode: mockUrlEntity.urlShortCode })
+      expect(mockValidateOwner).toHaveBeenCalledWith(mockUrlEntity, mockAuthUser)
+    })
+
+    it('should throw UnauthorizedException if the user is not the owner', async () => {
+      jest.spyOn(service as any, 'validateUrlOwner').mockImplementationOnce(() => {
+        throw new UnauthorizedException('You do not have permission to manage this URL.')
+      })
+
+      const deletMock = jest.spyOn(urlRepository, 'softDelete')
+
+      await expect(service.deleteUrlByShortCode(mockUrlEntity, mockAuthUser)).rejects.toThrow(
+        new UnauthorizedException('You do not have permission to manage this URL.'),
+      )
+
+      expect(deletMock).not.toHaveBeenCalled()
     })
   })
 })
