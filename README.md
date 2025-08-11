@@ -110,28 +110,34 @@ nest-url-shortener/
 ```
 ---
 
-### ▶️ Compile and run the project
+## ▶️ How to Use
 
-```bash
-# development
-$ npm run start
+To easily test the available routes in the project, you can import the provided HTTP collection file into your API client (such as [Insomnia](https://insomnia.rest/) or [Postman](https://www.postman.com/)).
 
-# watch mode
-$ npm run start:dev
+### 🔄 HTTP Collection for Route Testing
 
-# production mode
-$ npm run build
-$ npm run start:prod
-```
+1. Open your API client.
+2. Import the file `http_collection_request.json` located in the root of the project.
+3. Use the pre-configured requests to test endpoints like:
+   - `POST /auth/login`
+   - `GET /:shortCode`
+   - `POST /urls`
+   - `PUT /urls/:shortCode`
+   - `DELETE /urls/:shortCode`
+   - `POST /users`
+   - `GET /users/:id`
+   - `GET /users/:id/urls`
+
+This collection includes headers, body examples, and authentication flows to streamline your testing process.
 
 ---
 
-### 🧪 Run tests
+### 🧭 ToDo — Upcoming Improvements
 
-```bash
-# unit tests
-$ npm run test
+Here are some planned enhancements for the next updates:
 
-# test coverage
-$ npm run test:cov
-```
+- 🌐 Add Swagger/OpenAPI documentation for all endpoints
+- 🧪 Improve test coverage for Auth and User modules
+- 🧰 Infrastructure provisioning with Terraform
+- 📈 Add observability tools (e.g., logging, metrics, tracing)
+- 🕵️‍♂️ Create method to anonymize user data upon deletion
