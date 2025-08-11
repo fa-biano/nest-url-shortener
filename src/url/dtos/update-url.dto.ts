@@ -1,7 +1,6 @@
 import { IsUrl, IsNotEmpty } from 'class-validator'
-import { UrlShortCodeDto } from './url-short-code.dto'
 
-export class UpdateUrlDto extends UrlShortCodeDto {
+export class UpdateUrlDto {
   @IsUrl()
   @IsNotEmpty()
   updateUrl: URL
