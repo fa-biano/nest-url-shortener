@@ -1,3 +1,18 @@
+# [0.3.0](https://github.com/fa-biano/nest-url-shortener/compare/v0.2.0...v0.3.0) (2025-08-11)
+
+
+### Features
+
+* added deleteShortUrl method to UrlController ([7225637](https://github.com/fa-biano/nest-url-shortener/commit/72256372d88ce6b42762741f6a82071a94a1764e))
+* added deleteUrlByShortCode method to UrlService ([47a92e7](https://github.com/fa-biano/nest-url-shortener/commit/47a92e7fb721eb5af664bce2126dbfcdaa1aa2d1))
+* added findUrlsByUserId method to UserController ([b4d4731](https://github.com/fa-biano/nest-url-shortener/commit/b4d4731b1974c80903854076d2f7080b2089684c))
+* added findUrlsByUserId method to UserService ([991aeaf](https://github.com/fa-biano/nest-url-shortener/commit/991aeaf84244c7c4c43174ada4b4a0ad72adbf42))
+* added updateOriginalUrl to UrlController ([eebc091](https://github.com/fa-biano/nest-url-shortener/commit/eebc0918200a8335939b9f4d7d95c2c3ee1aaa03))
+* added updateUrlByShortCode method to UrlService ([03b4e7f](https://github.com/fa-biano/nest-url-shortener/commit/03b4e7f67572d2eeb32591fdfaf59d34894dcb44))
+* created UpdateUrlDto ([352f37c](https://github.com/fa-biano/nest-url-shortener/commit/352f37c605fbaa65166e36786575865ee6d61a1b))
+
+
+
 # [0.2.0](https://github.com/fa-biano/nest-url-shortener/compare/v0.1.0...v0.2.0) (2025-08-10)
 
 
