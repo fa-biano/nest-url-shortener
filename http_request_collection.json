@@ -1,0 +1,409 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2025-08-11T02:22:29.882Z",
+  "__export_source": "insomnia.desktop.app:v2023.5.8",
+  "resources": [
+    {
+      "_id": "req_760b0aa6161f482ebd7dcbf2048a2dd6",
+      "parentId": "fld_4c3f0f47cbe44a53ac4edf932c7e3cad",
+      "modified": 1754878592560,
+      "created": 1754786132638,
+      "url": "http://localhost:3001/users",
+      "name": "createUser",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"email\": \"teste6@teste.com\",\n\t\"password\": \"12345678\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" },
+        { "name": "User-Agent", "value": "insomnia/2023.5.8" }
+      ],
+      "authentication": {},
+      "metaSortKey": -1754864324270,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_4c3f0f47cbe44a53ac4edf932c7e3cad",
+      "parentId": "wrk_afd902532fb04969a2f9521143f42c6b",
+      "modified": 1754864321605,
+      "created": 1754864321605,
+      "name": "user",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1754864321605,
+      "_type": "request_group"
+    },
+    {
+      "_id": "wrk_afd902532fb04969a2f9521143f42c6b",
+      "parentId": null,
+      "modified": 1754864363771,
+      "created": 1754531859959,
+      "name": "nest-url-shortener",
+      "description": "",
+      "scope": "collection",
+      "_type": "workspace"
+    },
+    {
+      "_id": "req_ff30e83b8faf40e3813316424840b953",
+      "parentId": "fld_4c3f0f47cbe44a53ac4edf932c7e3cad",
+      "modified": 1754878225020,
+      "created": 1754787253824,
+      "url": "http://localhost:3001/users/be11fd08-adfa-4b4b-94fa-92c62b56b659",
+      "name": "findUserById",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [
+        {
+          "id": "pair_8633fcae8eb54ad580703c04673604f8",
+          "name": "",
+          "value": "",
+          "description": ""
+        }
+      ],
+      "headers": [{ "name": "User-Agent", "value": "insomnia/2023.5.8" }],
+      "authentication": {},
+      "metaSortKey": -1754864324220,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_08a13f7ae8204873a710c7b08ccb8d47",
+      "parentId": "fld_4c3f0f47cbe44a53ac4edf932c7e3cad",
+      "modified": 1754878228191,
+      "created": 1754870767313,
+      "url": "http://localhost:3001/users/be11fd08-adfa-4b4b-94fa-92c62b56b659/urls",
+      "name": "findUrlsByUserId",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [
+        {
+          "id": "pair_8633fcae8eb54ad580703c04673604f8",
+          "name": "",
+          "value": "",
+          "description": ""
+        }
+      ],
+      "headers": [
+        {
+          "name": "User-Agent",
+          "value": "insomnia/2023.5.8",
+          "id": "pair_1e63dec9ccb24fd294e8d98150114701"
+        },
+        {
+          "id": "pair_18c0b659207640c78fee0893c878a8bc",
+          "name": "token",
+          "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RlM0B0ZXN0ZS5jb20iLCJzdWIiOiJiZTExZmQwOC1hZGZhLTRiNGItOTRmYS05MmM2MmI1NmI2NTkiLCJpYXQiOjE3NTQ4NTMyMzEsImV4cCI6MTc1NDkzOTYzMX0.0H08aaa2yPRmtID88GjArSPtMxP5IZJQTxJwpqtdufA",
+          "description": ""
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1754864315887.5,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_ccf28ffe542240b58bb219d077591f65",
+      "parentId": "fld_c56dbf4946354950a89a233f33e07cb9",
+      "modified": 1754878240516,
+      "created": 1754803051894,
+      "url": "http://localhost:3001/auth/login",
+      "name": "Login",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"email\": \"teste@teste.com\",\n\t\"password\": \"12345678\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        { "name": "Content-Type", "value": "application/json" },
+        { "name": "User-Agent", "value": "insomnia/2023.5.8" }
+      ],
+      "authentication": {},
+      "metaSortKey": -1754864307555,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_c56dbf4946354950a89a233f33e07cb9",
+      "parentId": "wrk_afd902532fb04969a2f9521143f42c6b",
+      "modified": 1754864304463,
+      "created": 1754864304463,
+      "name": "auth",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1754864304463,
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_de850938b30c4a2ca5153b7e17770b46",
+      "parentId": "fld_015e89b3cbcf4183aec334fcf7781d52",
+      "modified": 1754878244505,
+      "created": 1754535903213,
+      "url": "http://localhost:3001/urls",
+      "name": "createShortUrl",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"originalUrl\": \"https://www.linkedin.com/in/fabiano-desouza\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json",
+          "id": "pair_a1dd1ef9fb1a434c8d9c50de4cb1ad1f"
+        },
+        {
+          "name": "User-Agent",
+          "value": "insomnia/2023.5.8",
+          "id": "pair_f88f26677cdf4feebaa55b453d13798e"
+        },
+        {
+          "id": "pair_ecd3d87811d044bf8c08d8045c4de181",
+          "name": "token",
+          "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RlM0B0ZXN0ZS5jb20iLCJzdWIiOiJiZTExZmQwOC1hZGZhLTRiNGItOTRmYS05MmM2MmI1NmI2NTkiLCJpYXQiOjE3NTQ4NTMyMzEsImV4cCI6MTc1NDkzOTYzMX0.0H08aaa2yPRmtID88GjArSPtMxP5IZJQTxJwpqtdufA",
+          "description": "",
+          "disabled": false
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1754864277700,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_015e89b3cbcf4183aec334fcf7781d52",
+      "parentId": "wrk_afd902532fb04969a2f9521143f42c6b",
+      "modified": 1754864264030,
+      "created": 1754864264030,
+      "name": "url",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1754864264030,
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_f2f0b61e13fe4aaa86faf788c644fd0f",
+      "parentId": "fld_015e89b3cbcf4183aec334fcf7781d52",
+      "modified": 1754875485510,
+      "created": 1754531862734,
+      "url": "http://localhost:3001/v2aTiX",
+      "name": "redirectURL",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [{ "name": "User-Agent", "value": "insomnia/2023.5.8" }],
+      "authentication": {},
+      "metaSortKey": -1754864277600,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_aab59ebd095c4991a4fe1f6d4de9f690",
+      "parentId": "fld_015e89b3cbcf4183aec334fcf7781d52",
+      "modified": 1754878624954,
+      "created": 1754864430377,
+      "url": "http://localhost:3001/urls/gj1UKZ",
+      "name": "updateOriginalUrl",
+      "description": "",
+      "method": "PUT",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"updateUrl\": \"https://www.linkedin.com/in/fabiano-desouza\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json",
+          "id": "pair_a1dd1ef9fb1a434c8d9c50de4cb1ad1f"
+        },
+        {
+          "name": "User-Agent",
+          "value": "insomnia/2023.5.8",
+          "id": "pair_f88f26677cdf4feebaa55b453d13798e"
+        },
+        {
+          "id": "pair_ecd3d87811d044bf8c08d8045c4de181",
+          "name": "token",
+          "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RlM0B0ZXN0ZS5jb20iLCJzdWIiOiJiZTExZmQwOC1hZGZhLTRiNGItOTRmYS05MmM2MmI1NmI2NTkiLCJpYXQiOjE3NTQ4NTMyMzEsImV4cCI6MTc1NDkzOTYzMX0.0H08aaa2yPRmtID88GjArSPtMxP5IZJQTxJwpqtdufA",
+          "description": "",
+          "disabled": false
+        },
+        {
+          "id": "pair_7c78cdc0c6a64ed5a9636d528f1f2b3d",
+          "name": "token",
+          "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RlQHRlc3RlLmNvbSIsInN1YiI6ImZkMTIwM2UwLWQyNmMtNDY4YS1iZWIyLWJmMThlZWNlYWM5ZCIsImlhdCI6MTc1NDg2NTYzNywiZXhwIjoxNzU0OTUyMDM3fQ.IZpU7JmRuQUM-8W69jqYhYfR64aqQAjZTCyOnFlKBuI",
+          "description": "",
+          "disabled": true
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1754864277500,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_3e268a85d4494a3885cc6ba425b7f3ee",
+      "parentId": "fld_015e89b3cbcf4183aec334fcf7781d52",
+      "modified": 1754878648741,
+      "created": 1754867056994,
+      "url": "http://localhost:3001/urls/gj1UKZ",
+      "name": "deleteShortUrl",
+      "description": "",
+      "method": "DELETE",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "User-Agent",
+          "value": "insomnia/2023.5.8",
+          "id": "pair_f88f26677cdf4feebaa55b453d13798e"
+        },
+        {
+          "id": "pair_ecd3d87811d044bf8c08d8045c4de181",
+          "name": "token",
+          "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RlM0B0ZXN0ZS5jb20iLCJzdWIiOiJiZTExZmQwOC1hZGZhLTRiNGItOTRmYS05MmM2MmI1NmI2NTkiLCJpYXQiOjE3NTQ4NTMyMzEsImV4cCI6MTc1NDkzOTYzMX0.0H08aaa2yPRmtID88GjArSPtMxP5IZJQTxJwpqtdufA",
+          "description": "",
+          "disabled": false
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1753009398644,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "env_e253afb9529e3c489eaae6c60c42268f4b2509ec",
+      "parentId": "wrk_afd902532fb04969a2f9521143f42c6b",
+      "modified": 1754531859976,
+      "created": 1754531859976,
+      "name": "Base Environment",
+      "data": {},
+      "dataPropertyOrder": null,
+      "color": null,
+      "isPrivate": false,
+      "metaSortKey": 1754531859976,
+      "_type": "environment"
+    },
+    {
+      "_id": "jar_e253afb9529e3c489eaae6c60c42268f4b2509ec",
+      "parentId": "wrk_afd902532fb04969a2f9521143f42c6b",
+      "modified": 1754864614520,
+      "created": 1754531859991,
+      "name": "Default Jar",
+      "cookies": [
+        {
+          "key": "trkCode",
+          "value": "gf",
+          "maxAge": 5,
+          "domain": "localhost",
+          "path": "/",
+          "hostOnly": true,
+          "pathIsDefault": true,
+          "creation": "2025-08-09T02:07:28.563Z",
+          "lastAccessed": "2025-08-10T22:23:34.519Z",
+          "id": "2329354764852074"
+        },
+        {
+          "key": "trkInfo",
+          "value": "AQE9SrJyTw0MLQAAAZiWFVRIAzzThv_6qZ_687M-QOsJY8K8r5qDfC1VxBS925yhC42eGCevxBiDYq-op-z4tyJWNj1cZrl9u6UKpqzx95jcHFNLLQ2CD3tIvcGdGhyP01bHGSg=",
+          "maxAge": 5,
+          "domain": "localhost",
+          "path": "/",
+          "hostOnly": true,
+          "pathIsDefault": true,
+          "creation": "2025-08-09T02:07:28.564Z",
+          "lastAccessed": "2025-08-10T22:23:34.520Z",
+          "id": "41286570783367593"
+        },
+        {
+          "key": "trkCode",
+          "value": "gf",
+          "maxAge": 5,
+          "domain": "localhost",
+          "path": "/url",
+          "hostOnly": true,
+          "pathIsDefault": true,
+          "creation": "2025-08-10T22:17:22.365Z",
+          "lastAccessed": "2025-08-10T22:17:22.365Z",
+          "id": "0794802039322382"
+        },
+        {
+          "key": "trkInfo",
+          "value": "AQG2VPRR1JhUKgAAAZiWD6codQaaLwHjLlO9yXK7-waJ-omSJnPb3dmByef5pTE_1KApHRMH6ElYJz_onRRuAkp1JD4HrX4nFmreTWecwyGWYB4AsqwWRer6ZoGswIpv-zDP5pI=",
+          "maxAge": 5,
+          "domain": "localhost",
+          "path": "/url",
+          "hostOnly": true,
+          "pathIsDefault": true,
+          "creation": "2025-08-10T22:17:22.366Z",
+          "lastAccessed": "2025-08-10T22:17:22.366Z",
+          "id": "25854089845736294"
+        }
+      ],
+      "_type": "cookie_jar"
+    }
+  ]
+}

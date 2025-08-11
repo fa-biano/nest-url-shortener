@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing'
 import { UserService } from '../user.service'
 import { getRepositoryToken } from '@nestjs/typeorm'
 import { UserEntity } from '../entities/user.entity'
-import { Repository } from 'typeorm'
+import { Repository, SelectQueryBuilder } from 'typeorm'
 import { CreateUserDto } from '../dtos/create-user.dto'
 import * as bcrypt from 'bcrypt'
 import { UserResponseDto } from '../dtos/user-response.dto'
@@ -12,6 +12,7 @@ import { instanceToPlain } from 'class-transformer'
 const mockUserRepository = () => ({
   save: jest.fn(),
   findOne: jest.fn(),
+  createQueryBuilder: jest.fn(),
 })
 
 jest.mock('bcrypt', () => ({
@@ -142,6 +143,47 @@ describe('UserService', () => {
       )
 
       expect(mockFind).toHaveBeenCalledWith({ where: { email: mockUser.email } })
+    })
+  })
+
+  describe('findUrlsByUserId', () => {
+    const userId = 'user-uuid-1'
+
+    it('should return an UserEntity with urls if the user is found', async () => {
+      const mockQueryBuilder = {
+        leftJoinAndSelect: jest.fn().mockReturnThis(),
+        where: jest.fn().mockReturnThis(),
+        andWhere: jest.fn().mockReturnThis(),
+        orderBy: jest.fn().mockReturnThis(),
+        select: jest.fn().mockReturnThis(),
+        getOne: jest.fn().mockResolvedValue(mockUser),
+      } as unknown as SelectQueryBuilder<UserEntity>
+
+      const mockCreateQueryBuilder = jest
+        .spyOn(userRepository, 'createQueryBuilder')
+        .mockReturnValue(mockQueryBuilder)
+
+      const result = await service.findUrlsByUserId(userId)
+
+      expect(mockCreateQueryBuilder).toHaveBeenCalledWith('user')
+      expect(result).toEqual(mockUser)
+    })
+
+    it('should throw NotFoundException if the user is not found', async () => {
+      const mockQueryBuilder = {
+        leftJoinAndSelect: jest.fn().mockReturnThis(),
+        where: jest.fn().mockReturnThis(),
+        andWhere: jest.fn().mockReturnThis(),
+        orderBy: jest.fn().mockReturnThis(),
+        select: jest.fn().mockReturnThis(),
+        getOne: jest.fn().mockResolvedValue(null),
+      } as unknown as SelectQueryBuilder<UserEntity>
+
+      jest.spyOn(userRepository, 'createQueryBuilder').mockReturnValue(mockQueryBuilder)
+
+      await expect(service.findUrlsByUserId(userId)).rejects.toThrow(
+        new NotFoundException('User not found'),
+      )
     })
   })
 })

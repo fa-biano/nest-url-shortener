@@ -35,4 +35,30 @@ export class UserService {
     if (!user) throw new NotFoundException('User not found')
     return user
   }
+
+  async findUrlsByUserId(userId: string): Promise<UserEntity> {
+    const userUrls = await this.userRepository
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.urls', 'url')
+      .where('user.id = :userId', { userId })
+      .andWhere('user.deleted_at IS NULL')
+      .andWhere('url.deleted_at IS NULL')
+      .orderBy('url.access_counter', 'DESC')
+      .select([
+        'user.id',
+        'user.email',
+        'user.createdAt',
+        'url.id',
+        'url.originalUrl',
+        'url.urlShortCode',
+        'url.accessCounter',
+        'url.lastAccessAt',
+        'url.createdAt',
+        'url.updatedAt',
+      ])
+      .getOne()
+
+    if (!userUrls) throw new NotFoundException('User not found')
+    return userUrls
+  }
 }
